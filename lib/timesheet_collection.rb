@@ -27,16 +27,13 @@ class TimesheetCollection
     end
   end
 
-  def calc_tot_hours_by_employee
-    collection.each_with_object({}) do |tsheet, hash|
-      hash.default = 0
-      hash[tsheet.name] += tsheet.hours
-    end
+  def tot_hours(employee_name)
+    tsheets_by_employee(employee_name).map(&:hours).sum
   end
 
-  def employee_hours_by_job
+  def employee_percentage_by_location
     employee_names.each_with_object({}) do |name, hash|
-      hash[name] = hours_by_location(name)
+      hash[name] = percentage_by_location(name)
     end
   end
 
@@ -50,11 +47,13 @@ class TimesheetCollection
       hash[tsheet.location] += tsheet.hours
     end
   end
-end
 
-# {
-#   carlos: {
-#     '86 marine' => 10,
-#     '53 columbia' => 15
-#   }
-# }
+  def percentage_by_location(employee_name)
+    location_hours = hours_by_location(employee_name)
+    total_hours = tot_hours(employee_name)
+
+    location_names.each_with_object({}) do |location_name, hash|
+      hash[location_name] = (location_hours[location_name] / total_hours).round(2)
+    end
+  end
+end
