@@ -4,7 +4,7 @@ class Timesheet
               :location
 
   def initialize(data)
-    @name = data[:employee_name]
+    @name = data[:firstname]
     @hours = data[:total_hours].to_f
     @location = data[:location_name]
   end

@@ -5,7 +5,8 @@ data = CSV.read('./data/payroll_9_25_20.csv', headers: true, header_converters: 
 payroll_data = TimesheetCollection.from_csv(data)
 
 # pp payroll_data.calc_tot_employee_hours
-pp payroll_data.location_names
+# pp payroll_data.tsheets_by_employee('Carlos')
+pp payroll_data.hours_by_location('Carlos')
 
 #  Open file
 #  Convert to csv object
