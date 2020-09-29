@@ -1,7 +1,10 @@
 require 'csv'
+require './lib/timesheet_collection'
 
 data = CSV.read('./data/payroll_9_25_20.csv', headers: true, header_converters: :symbol)
-data.each { |row| p row }
+payroll_data = TimesheetCollection.from_csv(data)
+
+pp payroll_data
 
 #  Open file
 #  Convert to csv object
