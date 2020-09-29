@@ -21,6 +21,12 @@ class TimesheetCollection
     end
   end
 
+  def employee_names
+    collection.each_with_object([]) do |tsheet, arr|
+      arr << tsheet.name unless arr.include?(tsheet.name)
+    end
+  end
+
   def calc_tot_hours_by_employee
     collection.each_with_object({}) do |tsheet, hash|
       hash.default = 0
@@ -28,9 +34,11 @@ class TimesheetCollection
     end
   end
 
-  def calc_tot_job_hours_by_employee; end
-
-  def calc_employee_hours_by_job; end
+  def employee_hours_by_job
+    employee_names.each_with_object({}) do |name, hash|
+      hash[name] = hours_by_location(name)
+    end
+  end
 
   def tsheets_by_employee(employee_name)
     collection.find_all { |tsheet| tsheet.name == employee_name }
@@ -42,12 +50,6 @@ class TimesheetCollection
       hash[tsheet.location] += tsheet.hours
     end
   end
-
-  # def hours_by_job
-  #   collection.each_with_object({}) do |tsheet, hash|
-  #     hash[tsheet.name] = { tsheet.location => tsheet.hours }
-  #   end
-  # end
 end
 
 # {
