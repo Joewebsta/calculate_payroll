@@ -51,6 +51,12 @@ class TimesheetCollection
     end
   end
 
+  def employee_hours_by_job
+    employee_names.each_with_object({}) do |name, hash|
+      hash[name] = hours_by_job(name)
+    end
+  end
+
   def employee_percentage_by_job
     employee_names.each_with_object({}) do |name, hash|
       hash[name] = percentage_by_job(name)
@@ -67,5 +73,17 @@ class TimesheetCollection
     job_names.each_with_object({}) do |job_name, hash|
       hash[job_name] = collection.select { |tsheet| tsheet.job == job_name }.map(&:hours).sum
     end
+  end
+
+  def edison_percentage_by_job
+    job_names.each_with_object({}) do |name, hash|
+      hash[name] = (tot_hours_by_job[name] / tot_hours).round(2)
+    end
+  end
+
+  def employee_percentage_by_job_all
+    hash = employee_percentage_by_job
+    hash['Edison'] = edison_percentage_by_job
+    hash
   end
 end
