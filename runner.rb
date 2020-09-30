@@ -1,7 +1,7 @@
 require 'csv'
 require './lib/timesheet_collection'
 
-data = CSV.read('./data/payroll_9_25_20.csv', headers: true, header_converters: :symbol)
+data = CSV.read(ARGV[0], headers: true, header_converters: :symbol)
 payroll_data = TimesheetCollection.from_csv(data)
 
 # pp payroll_data.job_names
@@ -19,7 +19,8 @@ pp payroll_data.employee_percentage_by_job_all
 # pp payroll_data.edison_percentage_by_job
 
 # TODO
-# Add Edison to #employee_percentage_by_location_hash
 # Order employee_percentage_by_location_hash by the way info is input into QB
 # Provide payroll data and calculate splits automatically
 # Use ARGV to accept file
+# Format output
+# Write calculation output to file or excel
