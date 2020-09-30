@@ -1,11 +1,11 @@
 class Timesheet
   attr_reader :name,
               :hours,
-              :location
+              :job
 
   def initialize(data)
     @name = data[:firstname]
     @hours = data[:total_hours].to_f
-    @location = data[:location_name]
+    @job = data[:location_name]
   end
 end

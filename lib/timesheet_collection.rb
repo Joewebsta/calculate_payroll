@@ -15,45 +15,45 @@ class TimesheetCollection
     new(timesheet_collection)
   end
 
-  def location_names
+  def job_names
     collection.each_with_object([]) do |tsheet, arr|
-      arr << tsheet.location unless arr.include?(tsheet.location)
-    end
+      arr << tsheet.job
+    end.uniq
   end
 
   def employee_names
     collection.each_with_object([]) do |tsheet, arr|
-      arr << tsheet.name unless arr.include?(tsheet.name)
-    end
-  end
-
-  def tot_hours(employee_name)
-    tsheets_by_employee(employee_name).map(&:hours).sum
-  end
-
-  def employee_percentage_by_location
-    employee_names.each_with_object({}) do |name, hash|
-      hash[name] = percentage_by_location(name)
-    end
+      arr << tsheet.name
+    end.uniq
   end
 
   def tsheets_by_employee(employee_name)
     collection.find_all { |tsheet| tsheet.name == employee_name }
   end
 
-  def hours_by_location(employee_name)
+  def tot_hours(employee_name)
+    tsheets_by_employee(employee_name).map(&:hours).sum
+  end
+
+  def hours_by_job(employee_name)
     tsheets_by_employee(employee_name).each_with_object({}) do |tsheet, hash|
       hash.default = 0
-      hash[tsheet.location] += tsheet.hours
+      hash[tsheet.job] += tsheet.hours
     end
   end
 
-  def percentage_by_location(employee_name)
-    location_hours = hours_by_location(employee_name)
+  def percentage_by_job(employee_name)
+    job_hours = hours_by_job(employee_name)
     total_hours = tot_hours(employee_name)
 
-    location_names.each_with_object({}) do |location_name, hash|
-      hash[location_name] = (location_hours[location_name] / total_hours).round(2)
+    job_names.each_with_object({}) do |job_name, hash|
+      hash[job_name] = (job_hours[job_name] / total_hours).round(2)
+    end
+  end
+
+  def employee_percentage_by_job
+    employee_names.each_with_object({}) do |name, hash|
+      hash[name] = percentage_by_job(name)
     end
   end
 end
