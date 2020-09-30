@@ -31,7 +31,7 @@ class TimesheetCollection
     collection.find_all { |tsheet| tsheet.name == employee_name }
   end
 
-  def tot_hours(employee_name)
+  def tot_hours_by_employee(employee_name)
     tsheets_by_employee(employee_name).map(&:hours).sum
   end
 
@@ -44,7 +44,7 @@ class TimesheetCollection
 
   def percentage_by_job(employee_name)
     job_hours = hours_by_job(employee_name)
-    total_hours = tot_hours(employee_name)
+    total_hours = tot_hours_by_employee(employee_name)
 
     job_names.each_with_object({}) do |job_name, hash|
       hash[job_name] = (job_hours[job_name] / total_hours).round(2)
@@ -54,6 +54,18 @@ class TimesheetCollection
   def employee_percentage_by_job
     employee_names.each_with_object({}) do |name, hash|
       hash[name] = percentage_by_job(name)
+    end
+  end
+
+  def tot_hours
+    employee_names.reduce(0) do |sum, name|
+      sum + tot_hours_by_employee(name)
+    end
+  end
+
+  def tot_hours_by_job
+    job_names.each_with_object({}) do |job_name, hash|
+      hash[job_name] = collection.select { |tsheet| tsheet.job == job_name }.map(&:hours).sum
     end
   end
 end
