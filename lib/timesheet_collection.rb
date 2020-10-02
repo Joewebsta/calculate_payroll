@@ -16,15 +16,11 @@ class TimesheetCollection
   end
 
   def job_names
-    collection.each_with_object([]) do |tsheet, arr|
-      arr << tsheet.job
-    end.uniq
+    collection.map(&:job).uniq
   end
 
   def employee_names
-    collection.each_with_object([]) do |tsheet, arr|
-      arr << tsheet.name
-    end.uniq
+    collection.map(&:name).uniq
   end
 
   def tsheets_by_employee(employee_name)
@@ -33,6 +29,19 @@ class TimesheetCollection
 
   def tot_hours_by_employee(employee_name)
     tsheets_by_employee(employee_name).map(&:hours).sum
+  end
+
+  def employee_hours_by_job2
+    employee_names.each_with_object({}) do |employee_name, employee_summary|
+      employee_summary[employee_name] = hours_by_job2(employee_name)
+    end
+  end
+
+  def hours_by_job2(employee_name)
+    collection.each_with_object({}) do |tsheet, job_summary|
+      job_summary.default = 0
+      job_summary[tsheet.job] += tsheet.hours if tsheet.name == employee_name
+    end
   end
 
   def hours_by_job(employee_name)
