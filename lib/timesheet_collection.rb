@@ -27,6 +27,20 @@ class TimesheetCollection
     collection.find_all { |tsheet| tsheet.name == employee_name }
   end
 
+  def filter_tsheets_by_job(job_name)
+    collection.find_all { |tsheet| tsheet.job == job_name }
+  end
+
+  def total_hours
+    collection.map(&:hours).sum
+  end
+
+  def total_hours_by_job
+    job_names.each_with_object({}) do |job_name, hash|
+      hash[job_name] = filter_tsheets_by_job(job_name).map(&:hours).sum
+    end
+  end
+
   def total_employee_hours(employee_name)
     filter_tsheets_by_employee(employee_name).map(&:hours).sum
   end
@@ -39,8 +53,8 @@ class TimesheetCollection
   end
 
   def employee_hours_summary
-    employee_names.each_with_object({}) do |name, hash|
-      hash[name] = employee_hours_by_job(name)
+    employee_names.each_with_object({}) do |employee_name, hash|
+      hash[employee_name] = employee_hours_by_job(employee_name)
     end
   end
 
@@ -50,31 +64,21 @@ class TimesheetCollection
     end
   end
 
-  def employee_percentage_summary
-    employee_names.each_with_object({}) do |name, hash|
-      hash[name] = employee_percentage_by_job(name)
-    end
-  end
-
-  def total_hours
-    collection.map(&:hours).sum
-  end
-
-  def total_hours_by_job
-    job_names.each_with_object({}) do |job_name, hash|
-      hash[job_name] = collection.select { |tsheet| tsheet.job == job_name }.map(&:hours).sum
-    end
-  end
-
   def edison_percentage_by_job
-    job_names.each_with_object({}) do |name, hash|
-      hash[name] = (total_hours_by_job[name] / total_hours).round(2)
+    job_names.each_with_object({}) do |job_name, hash|
+      hash[job_name] = (total_hours_by_job[job_name] / total_hours).round(2)
     end
   end
 
-  def employee_percentage_by_job_all
-    hash = employee_percentage_by_job
-    hash['Edison'] = edison_percentage_by_job
-    hash
+  def employee_percentage_summary
+    employee_names.each_with_object({}) do |employee_name, hash|
+      hash[employee_name] = employee_percentage_by_job(employee_name)
+    end
+  end
+
+  def employee_percentage_summary_with_edison
+    summary = employee_percentage_summary
+    summary['Edison'] = edison_percentage_by_job
+    summary
   end
 end
