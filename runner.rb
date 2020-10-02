@@ -15,7 +15,7 @@ payroll_data = TimesheetCollection.from_csv(data)
 # pp payroll_data.employee_hours_summary
 # pp payroll_data.employee_percentage_summary
 # pp payroll_data.employee_percentage_by_job_all
-# pp payroll_data.tot_hours
+pp payroll_data.total_hours
 pp payroll_data.total_hours_by_job
 # pp payroll_data.edison_percentage_by_job
 

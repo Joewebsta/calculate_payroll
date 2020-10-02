@@ -57,12 +57,10 @@ class TimesheetCollection
   end
 
   def total_hours
-    employee_names.reduce(0) do |sum, name|
-      sum + total_employee_hours(name)
-    end
+    collection.map(&:hours).sum
   end
 
-  def 
+  def total_hours_by_job
     job_names.each_with_object({}) do |job_name, hash|
       hash[job_name] = collection.select { |tsheet| tsheet.job == job_name }.map(&:hours).sum
     end
