@@ -4,6 +4,8 @@ require './lib/timesheet_collection'
 data = CSV.read(ARGV[0], headers: true, header_converters: :symbol)
 payroll_data = TimesheetCollection.from_csv(data)
 
+# pp data[0]
+
 # pp payroll_data.job_names
 # pp payroll_data.employee_names
 # pp payroll_data.tot_hours_by_employee('Carlos')
