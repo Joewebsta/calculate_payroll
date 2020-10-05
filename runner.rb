@@ -1,11 +1,13 @@
 require 'csv'
 require './lib/timesheet_collection'
+require './lib/report_formatter'
 
 data = CSV.read(ARGV[0], headers: true, header_converters: :symbol)
 timesheet_data = TimesheetCollection.from_csv(data)
 timesheet_report = timesheet_data.employee_percentage_summary_with_edison
+formatter = ReportFormatter.new(timesheet_report)
 
-File.open('text/timesheet_report.txt', 'w').write(timesheet_report)
+File.open('text/timesheet_report.txt', 'w').write(formatter.format_report)
 
 # pp timesheet_data.job_names
 # pp timesheet_data.employee_names
