@@ -2,26 +2,26 @@ require 'csv'
 require './lib/timesheet_collection'
 
 data = CSV.read(ARGV[0], headers: true, header_converters: :symbol)
-payroll_data = TimesheetCollection.from_csv(data)
+timesheet_data = TimesheetCollection.from_csv(data)
+timesheet_report = timesheet_data.employee_percentage_summary_with_edison
 
-# pp data[0]
+File.open('text/timesheet_report.txt', 'w').write(timesheet_report)
 
-# pp payroll_data.job_names
-# pp payroll_data.employee_names
-# pp payroll_data.tot_hours_by_employee('Carlos')
-# pp payroll_data.tot_hours_by_employee('Stevan')
-# pp payroll_data.tot_hours_by_employee('Erikson')
-# pp payroll_data.tsheets_by_employee('Carlos')
-# pp payroll_data.hours_by_job('Carlos')
-# pp payroll_data.percentage_by_job('Carlos')
-# pp payroll_data.employee_hours_summary
-pp payroll_data.employee_percentage_summary_with_edison
-# pp payroll_data.employee_percentage_by_job_all
-# pp payroll_data.total_hours
-# pp payroll_data.total_hours_by_job
-# pp payroll_data.edison_percentage_by_job
+# pp timesheet_data.job_names
+# pp timesheet_data.employee_names
+# pp timesheet_data.tot_hours_by_employee('Carlos')
+# pp timesheet_data.tot_hours_by_employee('Stevan')
+# pp timesheet_data.tot_hours_by_employee('Erikson')
+# pp timesheet_data.tsheets_by_employee('Carlos')
+# pp timesheet_data.hours_by_job('Carlos')
+# pp timesheet_data.percentage_by_job('Carlos')
+# pp timesheet_data.employee_hours_summary
+# pp timesheet_data.employee_percentage_by_job_all
+# pp timesheet_data.total_hours
+# pp timesheet_data.total_hours_by_job
+# pp timesheet_data.edison_percentage_by_job
 
-# pp payroll_data.employee_hours_by_job2
+# pp timesheet_data.employee_hours_by_job2
 
 # TODO
 # Order employee_percentage_by_location_hash by the way info is input into QB
