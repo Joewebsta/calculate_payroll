@@ -9,7 +9,7 @@ class ReportFormatter
     timesheet_report.reduce('') do |output_string, employee|
       output_string += format_employee_name(employee[0])
       output_string + format_employee_job(employee[1]) + "\n"
-    end
+    end.chomp
   end
 
   def format_employee_name(employee_name)
