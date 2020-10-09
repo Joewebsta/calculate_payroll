@@ -26,7 +26,12 @@ File.open('text/timesheet_report.txt', 'w').write(formatter.format_report)
 # pp timesheet_data.employee_hours_by_job2
 
 # TODO
+# sum the percentages to see if they equal 1.0 or greater
+# format output text so there are columns
+# give jobs an id so they are orded consitently in output text file
 # Order employee_percentage_by_location_hash by the way info is input into QB
+# include all jobs for each employee so the output text is consistent (same number of rows per employee)
+# Change order of employees in output text so it is consitent with quickbooks entry
 # Provide payroll data and calculate splits automatically
 # Use ARGV to accept file
 # Format output
