@@ -1,7 +1,7 @@
 require './lib/timesheet'
 
 describe 'Timesheet' do
-  subject { Timesheet.new({ firstname: 'Carlos', total_hours: '6', location_code: '86' }) }
+  subject { Timesheet.new({ firstname: 'Carlos', total_hours: '6', location_name: '86 Marine Road' }) }
 
   describe '#init' do
     it 'is an instance of Timesheet' do
@@ -17,7 +17,7 @@ describe 'Timesheet' do
     end
 
     it 'has a job' do
-      expect(subject.job).to eql('86')
+      expect(subject.job).to eql('86 Marine Road')
     end
   end
 end
