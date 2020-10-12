@@ -78,7 +78,15 @@ class TimesheetCollection
 
   def employee_percentage_summary_with_edison
     summary = employee_percentage_summary
-    summary['Edison'] = edison_percentage_by_job
+    edison_job_percentages = edison_percentage_by_job
+
+    edison_job_percentages[job_names[0]] -= 0.01 if percentage_total_greater_than_1?(edison_percentage_by_job)
+
+    summary['Edison'] = edison_job_percentages
     summary
+  end
+
+  def percentage_total_greater_than_1?(percentage_summary)
+    percentage_summary.values.sum > 1.0
   end
 end

@@ -101,10 +101,10 @@ describe 'TimesheetCollection' do
 
   describe '#employee_percentage_summary' do
     it 'returns summary of each employee and their percentage by job' do
-      hash = { 'Carlos' => {
-        '40 Boynton Road' => 0.25, '86 Marine Road' => 0.75
-      },
-               'Erikson' => { '14 Pompeii Street' => 1.0 } }
+      hash = {
+        'Carlos' => { '40 Boynton Road' => 0.25, '86 Marine Road' => 0.75 },
+        'Erikson' => { '14 Pompeii Street' => 1.0 }
+      }
       expect(@tsheet_collection.employee_percentage_summary).to eql(hash)
     end
   end
@@ -113,10 +113,17 @@ describe 'TimesheetCollection' do
     it 'returns summary of each employee AND Edison and their percentage by job' do
       hash = {
         'Carlos' => { '40 Boynton Road' => 0.25, '86 Marine Road' => 0.75 },
-        'Edison' => { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.38 },
+        'Edison' => { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.37 },
         'Erikson' => { '14 Pompeii Street' => 1.0 }
       }
       expect(@tsheet_collection.employee_percentage_summary_with_edison).to eql(hash)
+    end
+  end
+
+  describe '#percentage_total_greater_than_1?' do
+    it 'checks if the sum of job percentages is greater than 1' do
+      hash = { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.38 }
+      expect(@tsheet_collection.percentage_total_greater_than_1?(hash)).to be true
     end
   end
 end
