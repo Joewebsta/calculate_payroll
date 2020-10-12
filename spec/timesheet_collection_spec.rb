@@ -113,7 +113,7 @@ describe 'TimesheetCollection' do
     it 'returns summary of each employee AND Edison and their percentage by job' do
       hash = {
         'Carlos' => { '40 Boynton Road' => 0.25, '86 Marine Road' => 0.75 },
-        'Edison' => { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.37 },
+        'Edison' => { '14 Pompeii Street' => 0.49, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.38 },
         'Erikson' => { '14 Pompeii Street' => 1.0 }
       }
       expect(@tsheet_collection.employee_percentage_summary_with_edison).to eql(hash)
@@ -127,11 +127,18 @@ describe 'TimesheetCollection' do
     end
   end
 
-  describe 'adjust_summary_percentage' do
+  describe '#adjust_summary_percentage' do
     it 'decreases percentage total to 1.0' do
       hash_before = { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.38 }
-      hash_after = { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.37 }
+      hash_after = { '14 Pompeii Street' => 0.49, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.38 }
       expect(@tsheet_collection.adjust_summary_percentage(hash_before)).to eql(hash_after)
+    end
+  end
+
+  describe '#find_job_with_largest_percentage' do
+    it 'finds the job with the largest percentage in the summary hash' do
+      hash = { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.38 }
+      expect(@tsheet_collection.find_job_with_largest_percentage(hash)).to eql('14 Pompeii Street');
     end
   end
 end

@@ -93,7 +93,13 @@ class TimesheetCollection
   end
 
   def adjust_summary_percentage(percentage_summary)
-    percentage_summary[job_names[0]] -= 0.01
+    job_name = find_job_with_largest_percentage(percentage_summary)
+
+    percentage_summary[job_name] -= 0.01
     percentage_summary
+  end
+
+  def find_job_with_largest_percentage(percentage_summary)
+    percentage_summary.key(percentage_summary.values.max)
   end
 end
