@@ -1,6 +1,6 @@
 CARLOS
 274 Belmont Ave - Brockton: 0.03 
-86 Marine Road - S. Boston: 0.92 
+86 Marine Road - S. Boston: 0.91 
 615 Mass Ave - Boston: 0.06 
 
 ERIKSON
@@ -10,7 +10,7 @@ ERIKSON
 86 Marine Road - S. Boston: 0.09 
 
 STEVAN
-86 Marine Road - S. Boston: 0.44 
+86 Marine Road - S. Boston: 0.43 
 40 Boynton Rd - Medford: 0.27 
 15 Northern Ave - Lynn: 0.2 
 14 Pompeii St - Boston: 0.1 

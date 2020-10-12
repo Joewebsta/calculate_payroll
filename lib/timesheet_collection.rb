@@ -59,9 +59,15 @@ class TimesheetCollection
   end
 
   def employee_percentage_by_job(employee_name)
-    employee_hours_by_job(employee_name).transform_values do |job_hours|
+    percentages_by_job = employee_hours_by_job(employee_name).transform_values do |job_hours|
       (job_hours / total_employee_hours(employee_name)).round(2)
     end
+
+    if percentage_total_greater_than_1?(percentages_by_job)
+      percentages_by_job = adjust_summary_percentage(percentages_by_job)
+    end
+
+    percentages_by_job
   end
 
   def edison_percentage_by_job
