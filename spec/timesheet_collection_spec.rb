@@ -126,4 +126,12 @@ describe 'TimesheetCollection' do
       expect(@tsheet_collection.percentage_total_greater_than_1?(hash)).to be true
     end
   end
+
+  describe 'adjust_summary_percentage' do
+    it 'decreases percentage total to 1.0' do
+      hash_before = { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.38 }
+      hash_after = { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.37 }
+      expect(@tsheet_collection.adjust_summary_percentage(hash_before)).to eql(hash_after)
+    end
+  end
 end
