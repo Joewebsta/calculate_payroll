@@ -18,10 +18,10 @@ class ReportFormatter
 
   def format_employee_job(job_obj)
     job_obj.reduce('') do |string, job|
-      job_name = job[0]
-      job_percentage = job[1]
+      job_name = (job[0] + ':').ljust(28)
+      job_percentage = job[1].to_s.ljust(4, '0')
 
-      string + "#{job_name}: #{job_percentage} \n"
+      string + "#{job_name} #{job_percentage} \n"
     end
   end
 end
