@@ -70,6 +70,18 @@ class TimesheetCollection
     percentages_by_job
   end
 
+  def employee_payroll_by_job(employee_name)
+    employee_percentage_by_job(employee_name).transform_values do |job_percentage|
+      {
+        gross: (1065 * job_percentage).round(2),
+        garnishment: (162.5 * job_percentage).round(2),
+        net: (626.5 * job_percentage).round(2),
+        ee_taxes: (276 * job_percentage).round(2),
+        er_taxes: (81.47 * job_percentage).round(2)
+      }
+    end
+  end
+
   def edison_percentage_by_job
     job_names.each_with_object({}) do |job_name, hash|
       hash[job_name] = (total_hours_by_job[job_name] / total_hours).round(2)
