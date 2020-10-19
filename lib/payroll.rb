@@ -7,7 +7,7 @@ class Payroll
               :gross_er_sum
 
   def initialize(data)
-    @name = data[:first_name]
+    @name = data[:first_name] || 'Totals'
     @gross = data[:gross_earnings].to_f
     @net = data[:net_pay].to_f
     @ee_taxes = data[:employee_taxes].to_f
