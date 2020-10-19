@@ -15,7 +15,7 @@ describe 'TimesheetCollection' do
     end
 
     it 'has a collection' do
-      expect(@tsheet_collection.collection.length).to eql(3)
+      expect(@tsheet_collection.timesheet_collection.length).to eql(3)
     end
   end
 
@@ -138,7 +138,7 @@ describe 'TimesheetCollection' do
   describe '#find_job_with_largest_percentage' do
     it 'finds the job with the largest percentage in the summary hash' do
       hash = { '14 Pompeii Street' => 0.5, '40 Boynton Road' => 0.13, '86 Marine Road' => 0.38 }
-      expect(@tsheet_collection.find_job_with_largest_percentage(hash)).to eql('14 Pompeii Street');
+      expect(@tsheet_collection.find_job_with_largest_percentage(hash)).to eql('14 Pompeii Street')
     end
   end
 end

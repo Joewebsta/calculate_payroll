@@ -1,10 +1,10 @@
 require './lib/timesheet'
 
 class TimesheetCollection
-  attr_reader :collection
+  attr_reader :timesheet_collection
 
-  def initialize(collection)
-    @collection = collection
+  def initialize(timesheet_collection)
+    @timesheet_collection = timesheet_collection
   end
 
   def self.from_csv(data)
@@ -15,24 +15,26 @@ class TimesheetCollection
     new(timesheet_collection)
   end
 
+  def add_payroll_collection(payroll_collection); end
+
   def job_names
-    collection.map(&:job).uniq
+    timesheet_collection.map(&:job).uniq
   end
 
   def employee_names
-    collection.map(&:name).uniq
+    timesheet_collection.map(&:name).uniq
   end
 
   def filter_tsheets_by_employee(employee_name)
-    collection.find_all { |tsheet| tsheet.name == employee_name }
+    timesheet_collection.find_all { |tsheet| tsheet.name == employee_name }
   end
 
   def filter_tsheets_by_job(job_name)
-    collection.find_all { |tsheet| tsheet.job == job_name }
+    timesheet_collection.find_all { |tsheet| tsheet.job == job_name }
   end
 
   def total_hours
-    collection.map(&:hours).sum
+    timesheet_collection.map(&:hours).sum
   end
 
   def total_hours_by_job
