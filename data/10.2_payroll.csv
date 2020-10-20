@@ -1,6 +1,6 @@
-Last Name,First Name,Gross Earnings,Employee Taxes,Employer Taxes,Net Pay
-Pina,Stevan,693,158.22,53.01,534.78
-Ribeiro,Edison,1200,319.07,91.8,880.93
-Santiago,Carlos,1065,276,81.47,626.5
-Viera,Erikson,612.5,138.39,96.02,474.11
-Totals,,3570.5,891.68,322.3,2516.32
+Last Name,First Name,Gross Earnings,Employee Taxes,Employer Taxes,Net Pay,Garnishment
+Pina,Stevan,693,158.22,53.01,534.78,0
+Ribeiro,Edison,1200,319.07,91.8,880.93,0
+Santiago,Carlos,1065,276,81.47,626.5,162.5
+Viera,Erikson,612.5,138.39,96.02,474.11,0
+Totals,,3570.5,891.68,322.3,2516.32,0
