@@ -81,7 +81,8 @@ class TimesheetCollection
         garnishment: (employee_payroll.garnishment * job_percentage).round(2),
         ee_taxes: (employee_payroll.ee_taxes * job_percentage).round(2),
         er_taxes: (employee_payroll.er_taxes * job_percentage).round(2),
-        gross: (employee_payroll.gross * job_percentage).round(2)
+        expected_gross: employee_payroll.gross.round(2),
+        actual_gross: employee_payroll.net + employee_payroll.garnishment + employee_payroll.ee_taxes
       }
     end
   end
@@ -123,5 +124,11 @@ class TimesheetCollection
 
   def find_job_with_largest_percentage(percentage_summary)
     percentage_summary.key(percentage_summary.values.max)
+  end
+
+  def employee_payroll_summary(payroll_collection)
+    employee_names.each_with_object({}) do |employee_name, summary|
+      summary[employee_name] = employee_payroll_by_job(employee_name, payroll_collection)
+    end
   end
 end
