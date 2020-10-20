@@ -72,14 +72,16 @@ class TimesheetCollection
     percentages_by_job
   end
 
-  def employee_payroll_by_job(employee_name)
+  def employee_payroll_by_job(employee_name, payroll_collection)
     employee_percentage_by_job(employee_name).transform_values do |job_percentage|
+      employee_payroll = payroll_collection.filter_payroll_by_employee(employee_name)
+
       {
-        gross: (1065 * job_percentage).round(2),
-        garnishment: (162.5 * job_percentage).round(2),
-        net: (626.5 * job_percentage).round(2),
-        ee_taxes: (276 * job_percentage).round(2),
-        er_taxes: (81.47 * job_percentage).round(2)
+        net: (employee_payroll.net * job_percentage).round(2),
+        garnishment: (employee_payroll.garnishment * job_percentage).round(2),
+        ee_taxes: (employee_payroll.ee_taxes * job_percentage).round(2),
+        er_taxes: (employee_payroll.er_taxes * job_percentage).round(2),
+        gross: (employee_payroll.gross * job_percentage).round(2)
       }
     end
   end
