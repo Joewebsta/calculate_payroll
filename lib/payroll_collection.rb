@@ -1,6 +1,8 @@
 require './lib/payroll'
 
 class PayrollCollection
+  attr_reader :payroll_collection
+
   def initialize(collection)
     @payroll_collection = collection
   end
@@ -11,5 +13,9 @@ class PayrollCollection
     end
 
     new(payroll_collection)
+  end
+
+  def filter_payroll_by_employee(employee_name)
+    payroll_collection.find { |payroll| payroll.name == employee_name }
   end
 end
