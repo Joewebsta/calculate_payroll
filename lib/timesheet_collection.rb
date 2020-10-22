@@ -149,7 +149,8 @@ class TimesheetCollection
 
   def employee_payroll_summary_with_edison(payroll_collection)
     summary = employee_payroll_summary(payroll_collection)
-    # summary['Edison'] =
+    summary['Edison'] = edison_payroll_by_job(payroll_collection)
+    summary
   end
 
   def payroll_job_object; end
