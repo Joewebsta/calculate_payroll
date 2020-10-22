@@ -108,13 +108,12 @@ class TimesheetCollection
     employee_percentage_by_job(employee_name).transform_values do |job_percentage|
       employee_payroll = payroll_collection.filter_payroll_by_employee(employee_name)
 
+      # REFACTOR?
       {
         net: (employee_payroll.net * job_percentage).round(2),
         garnishment: (employee_payroll.garnishment * job_percentage).round(2),
         ee_taxes: (employee_payroll.ee_taxes * job_percentage).round(2),
-        er_taxes: (employee_payroll.er_taxes * job_percentage).round(2),
-        expected_gross: employee_payroll.gross.round(2),
-        actual_gross: employee_payroll.net + employee_payroll.garnishment + employee_payroll.ee_taxes
+        er_taxes: (employee_payroll.er_taxes * job_percentage).round(2)
       }
     end
   end
@@ -124,6 +123,36 @@ class TimesheetCollection
       summary[employee_name] = employee_payroll_by_job(employee_name, payroll_collection)
     end
   end
+
+  def edison_payroll_by_job(payroll_collection)
+    edison_payroll = payroll_collection.edison_payroll
+
+    edison_payroll_summary = edison_percentage_by_job.transform_values do |job_percentage|
+      # REFACTOR?
+      {
+        net: ((edison_payroll.net / 2) * job_percentage).round(2),
+        garnishment: (edison_payroll.garnishment * job_percentage).round(2),
+        ee_taxes: ((edison_payroll.ee_taxes / 2) * job_percentage).round(2),
+        er_taxes: ((edison_payroll.er_taxes / 2) * job_percentage).round(2)
+      }
+    end
+
+    admin_allocation = {
+      net: (edison_payroll.net / 2).round(2),
+      ee_taxes: (edison_payroll.ee_taxes / 2).round(2),
+      er_taxes: (edison_payroll.er_taxes / 2).round(2)
+    }
+
+    edison_payroll_summary['admin'] = admin_allocation
+    edison_payroll_summary
+  end
+
+  def employee_payroll_summary_with_edison(payroll_collection)
+    summary = employee_payroll_summary(payroll_collection)
+    # summary['Edison'] =
+  end
+
+  def payroll_job_object; end
 
   # HELPERS
 
