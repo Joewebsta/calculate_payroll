@@ -15,11 +15,17 @@ class TimesheetCollection
     new(timesheet_collection)
   end
 
-  def add_payroll_collection(payroll_collection); end
+  # JOBS
 
   def job_names
     timesheet_collection.map(&:job).uniq
   end
+
+  def filter_tsheets_by_job(job_name)
+    timesheet_collection.find_all { |tsheet| tsheet.job == job_name }
+  end
+
+  # EMPLOYEES
 
   def employee_names
     timesheet_collection.map(&:name).uniq
@@ -29,9 +35,7 @@ class TimesheetCollection
     timesheet_collection.find_all { |tsheet| tsheet.name == employee_name }
   end
 
-  def filter_tsheets_by_job(job_name)
-    timesheet_collection.find_all { |tsheet| tsheet.job == job_name }
-  end
+  # HOURS
 
   def total_hours
     timesheet_collection.map(&:hours).sum
@@ -60,6 +64,8 @@ class TimesheetCollection
     end
   end
 
+  # PERCENTAGES
+
   def employee_percentage_by_job(employee_name)
     percentages_by_job = employee_hours_by_job(employee_name).transform_values do |job_hours|
       (job_hours / total_employee_hours(employee_name)).round(2)
@@ -71,6 +77,32 @@ class TimesheetCollection
 
     percentages_by_job
   end
+
+  def employee_percentage_summary
+    employee_names.each_with_object({}) do |employee_name, hash|
+      hash[employee_name] = employee_percentage_by_job(employee_name)
+    end
+  end
+
+  def edison_percentage_by_job
+    job_names.each_with_object({}) do |job_name, hash|
+      hash[job_name] = (total_hours_by_job[job_name] / total_hours).round(2)
+    end
+  end
+
+  def employee_percentage_summary_with_edison
+    summary = employee_percentage_summary
+    edison_job_percentages = edison_percentage_by_job
+
+    if percentage_total_greater_than_1?(edison_job_percentages)
+      edison_job_percentages = adjust_summary_percentage(edison_job_percentages)
+    end
+
+    summary['Edison'] = edison_job_percentages
+    summary
+  end
+
+  # PAYROLL
 
   def employee_payroll_by_job(employee_name, payroll_collection)
     employee_percentage_by_job(employee_name).transform_values do |job_percentage|
@@ -87,29 +119,13 @@ class TimesheetCollection
     end
   end
 
-  def edison_percentage_by_job
-    job_names.each_with_object({}) do |job_name, hash|
-      hash[job_name] = (total_hours_by_job[job_name] / total_hours).round(2)
+  def employee_payroll_summary(payroll_collection)
+    employee_names.each_with_object({}) do |employee_name, summary|
+      summary[employee_name] = employee_payroll_by_job(employee_name, payroll_collection)
     end
   end
 
-  def employee_percentage_summary
-    employee_names.each_with_object({}) do |employee_name, hash|
-      hash[employee_name] = employee_percentage_by_job(employee_name)
-    end
-  end
-
-  def employee_percentage_summary_with_edison
-    summary = employee_percentage_summary
-    edison_job_percentages = edison_percentage_by_job
-
-    if percentage_total_greater_than_1?(edison_job_percentages)
-      edison_job_percentages = adjust_summary_percentage(edison_job_percentages)
-    end
-
-    summary['Edison'] = edison_job_percentages
-    summary
-  end
+  # HELPERS
 
   def percentage_total_greater_than_1?(percentage_summary)
     percentage_summary.values.sum > 1.0
@@ -124,11 +140,5 @@ class TimesheetCollection
 
   def find_job_with_largest_percentage(percentage_summary)
     percentage_summary.key(percentage_summary.values.max)
-  end
-
-  def employee_payroll_summary(payroll_collection)
-    employee_names.each_with_object({}) do |employee_name, summary|
-      summary[employee_name] = employee_payroll_by_job(employee_name, payroll_collection)
-    end
   end
 end
