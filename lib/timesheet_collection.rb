@@ -105,16 +105,10 @@ class TimesheetCollection
   # PAYROLL
 
   def employee_payroll_by_job(employee_name, payroll_collection)
-    employee_percentage_by_job(employee_name).transform_values do |job_percentage|
-      employee_payroll = payroll_collection.filter_payroll_by_employee(employee_name)
+    employee_payroll = payroll_collection.filter_payroll_by_employee(employee_name)
 
-      # REFACTOR?
-      {
-        net: (employee_payroll.net * job_percentage).round(2),
-        garnishment: (employee_payroll.garnishment * job_percentage).round(2),
-        ee_taxes: (employee_payroll.ee_taxes * job_percentage).round(2),
-        er_taxes: (employee_payroll.er_taxes * job_percentage).round(2)
-      }
+    employee_percentage_by_job(employee_name).transform_values do |job_percentage|
+      payroll_job_obj(employee_payroll, job_percentage)
     end
   end
 
@@ -128,13 +122,7 @@ class TimesheetCollection
     edison_payroll = payroll_collection.edison_payroll
 
     edison_payroll_summary = edison_percentage_by_job.transform_values do |job_percentage|
-      # REFACTOR?
-      {
-        net: ((edison_payroll.net / 2) * job_percentage).round(2),
-        garnishment: (edison_payroll.garnishment * job_percentage).round(2),
-        ee_taxes: ((edison_payroll.ee_taxes / 2) * job_percentage).round(2),
-        er_taxes: ((edison_payroll.er_taxes / 2) * job_percentage).round(2)
-      }
+      payroll_job_obj(edison_payroll, job_percentage)
     end
 
     admin_allocation = {
@@ -153,7 +141,14 @@ class TimesheetCollection
     summary
   end
 
-  def payroll_job_object; end
+  def payroll_job_obj(payroll, job_percentage)
+    {
+      net: (payroll.net * job_percentage).round(2),
+      garnishment: (payroll.garnishment * job_percentage).round(2),
+      ee_taxes: (payroll.ee_taxes * job_percentage).round(2),
+      er_taxes: (payroll.er_taxes * job_percentage).round(2)
+    }
+  end
 
   # HELPERS
 
