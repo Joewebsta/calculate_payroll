@@ -18,4 +18,8 @@ class PayrollCollection
   def filter_payroll_by_employee(employee_name)
     payroll_collection.find { |payroll| payroll.name == employee_name }
   end
+
+  def edison_payroll
+    payroll_collection.find { |payroll| payroll.name == 'Edison' }
+  end
 end
