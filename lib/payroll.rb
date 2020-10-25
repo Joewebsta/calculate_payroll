@@ -14,6 +14,6 @@ class Payroll
     @garnishment = data[:garnishment].to_f
     @ee_taxes = data[:employee_taxes].to_f
     @er_taxes = data[:employer_taxes].to_f
-    @gross_er_sum = @gross + @er_taxes
+    @gross_er_sum = (@gross + @er_taxes).round(2)
   end
 end
