@@ -71,7 +71,7 @@ class TimesheetCollection
       (job_hours / total_employee_hours(employee_name)).round(2)
     end
 
-    if percentage_total_greater_than_1?(percentages_by_job)
+    unless percentage_total_equals_1?(percentages_by_job)
       percentages_by_job = adjust_summary_percentage(percentages_by_job)
     end
 
@@ -94,7 +94,7 @@ class TimesheetCollection
     summary = employee_percentage_summary
     edison_job_percentages = edison_percentage_by_job
 
-    if percentage_total_greater_than_1?(edison_job_percentages)
+    if percentage_total_equals_1?(edison_job_percentages)
       edison_job_percentages = adjust_summary_percentage(edison_job_percentages)
     end
 
@@ -156,14 +156,17 @@ class TimesheetCollection
 
   # HELPERS
 
-  def percentage_total_greater_than_1?(percentage_summary)
-    percentage_summary.values.sum > 1.0
+  def percentage_total_equals_1?(percentage_summary)
+    percentage_summary.values.sum == 1.00
   end
 
   def adjust_summary_percentage(percentage_summary)
     job_name = find_job_with_largest_percentage(percentage_summary)
+    percentages_sum = percentage_summary.values.sum
 
-    percentage_summary[job_name] -= 0.01
+    adjustment = (percentages_sum - 1).positive? ? -0.01 : 0.01
+
+    percentage_summary[job_name] += adjustment
     percentage_summary
   end
 
