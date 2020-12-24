@@ -1,15 +1,16 @@
 class ReportFormatter
-  attr_reader :timesheet_report
+  attr_reader :payroll_by_job_report
 
-  def initialize(timesheet_report)
-    @timesheet_report = timesheet_report
+  def initialize(data)
+    @payroll_by_job_report = data
   end
 
   def format_report
-    timesheet_report.reduce('') do |output_string, employee|
-      output_string += format_employee_name(employee[0])
-      output_string + format_employee_job(employee[1]) + "\n"
-    end.chomp
+    # timesheet_report.reduce('') do |output_string, employee|
+    #   output_string += format_employee_name(employee[0])
+    #   output_string + format_employee_job(employee[1]) + "\n"
+    # end.chomp
+    payroll_by_job_report
   end
 
   def format_employee_name(employee_name)

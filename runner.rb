@@ -9,9 +9,9 @@ payroll_data = CSV.read(ARGV[1], headers: true, header_converters: :symbol)
 payroll_collection = PayrollCollection.from_csv(payroll_data)
 timesheet_collection = TimesheetCollection.from_csv(timesheet_data)
 
-# timesheet_report = timesheet_collection.employee_percentage_summary_with_edison
-# formatter = ReportFormatter.new(timesheet_report)
-# File.open('text/timesheet_report.txt', 'w').write(formatter.format_report)
+payroll_by_job_report = timesheet_collection.employee_payroll_summary_with_edison(payroll_collection)
+pp formatter = ReportFormatter.new(payroll_by_job_report)
+File.open('text/payroll_by_job_report.txt', 'w').write(formatter.format_report)
 
 # TEST CODE
 # pp timesheet_collection.employee_hours_summary
@@ -29,7 +29,7 @@ timesheet_collection = TimesheetCollection.from_csv(timesheet_data)
 # pp timesheet_collection.employee_payroll_by_job('Erikson', payroll_collection)
 # pp timesheet_collection.employee_payroll_by_job('Steven', payroll_collection)
 # pp timesheet_collection.employee_payroll_summary(payroll_collection)
-pp timesheet_collection.employee_payroll_summary_with_edison(payroll_collection)
+# pp timesheet_collection.employee_payroll_summary_with_edison(payroll_collection)
 # pp timesheet_collection.edison_payroll_by_job(payroll_collection)
 
 # TODO
