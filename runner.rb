@@ -19,7 +19,18 @@ timesheet_collection = TimesheetCollection.from_csv(timesheet_data)
 # pp timesheet_collection.employee_payroll_by_job('Carlos')
 # pp payroll_data
 # pp timesheet_collection.employee_payroll_by_job('Carlos', payroll_collection)
-pp timesheet_collection.employee_payroll_summary(payroll_collection)
+
+# pp timesheet_collection.employee_payroll_summary(payroll_collection)
+# pp timesheet_collection.edison_percentage_by_job
+# pp timesheet_collection.edison_payroll(payroll_collection)
+# pp timesheet_collection.edison_payroll_by_job(payroll_collection)
+# pp timesheet_collection.employee_percentage_by_job('Carlos')
+# pp timesheet_collection.employee_payroll_by_job('Carlos', payroll_collection)
+# pp timesheet_collection.employee_payroll_by_job('Erikson', payroll_collection)
+# pp timesheet_collection.employee_payroll_by_job('Steven', payroll_collection)
+# pp timesheet_collection.employee_payroll_summary(payroll_collection)
+pp timesheet_collection.employee_payroll_summary_with_edison(payroll_collection)
+# pp timesheet_collection.edison_payroll_by_job(payroll_collection)
 
 # TODO
 # give jobs an id so they are orded consitently in output text file
